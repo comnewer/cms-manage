@@ -85,6 +85,9 @@ function getClientEnvironment(publicUrl) {
         WDS_SOCKET_HOST: process.env.WDS_SOCKET_HOST,
         WDS_SOCKET_PATH: process.env.WDS_SOCKET_PATH,
         WDS_SOCKET_PORT: process.env.WDS_SOCKET_PORT,
+        //后端端口
+        SERVER_HOST_PORT: process.env.SERVER_HOST_PORT,
+        SERVER_HOST_IMG: process.env.SERVER_HOST_IMG,
         // Whether or not react-refresh is enabled.
         // It is defined here so it is available in the webpackHotDevClient.
         FAST_REFRESH: process.env.FAST_REFRESH !== 'false',

@@ -10,7 +10,7 @@ import Loading from "components/Loading";
 
 interface Iroute {
     path: string,
-    element: React.FC,
+    element: React.FC|any,
     children?: Iroute[]
 }
 

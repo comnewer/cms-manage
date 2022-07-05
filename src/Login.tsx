@@ -1,13 +1,37 @@
-import { Button, Form, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { Button, Form, Input, message } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 import {UserOutlined, LockOutlined} from '@ant-design/icons';
+import { LoginApi } from 'request/api';
 import React from 'react';
 import "login.less"
 
 const logo = require("assets/images/logo.png");
 
+interface ILogin{
+  username:string,
+  password:string
+}
+
 const Login: React.FC = () => {
-  const onFinish = (values: any) => {
+  const navigate = useNavigate();
+  const onFinish = (values: ILogin) => {
+    let {username, password} = values;
+
+    LoginApi({username, password}).then(
+      (res:any) => {
+        if(res.errcode===0){
+          //登录成功
+          message.success('登陆成功，即将跳转到首页', 1.5);
+          //保存用户信息
+          localStorage.setItem('username', res.data.username);
+          localStorage.setItem('cms-token', res.data['cms-token']);
+          localStorage.setItem('avatar', res.data.avatar);
+          //登陆成功，跳转
+          setTimeout(()=>navigate('/'),1500);
+        }
+      }
+    )
+
     console.log('Success:', values);
   };
 

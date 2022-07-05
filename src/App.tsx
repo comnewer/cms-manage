@@ -3,7 +3,7 @@ import { Breadcrumb, Layout, Menu } from 'antd';
 import React from "react";
 import { Outlet } from "react-router-dom";
 import MyHeader from "components/MyHeader";
-
+import { connect } from 'react-redux';
 import 'App.less'
 
 const {Content, Sider } = Layout;
@@ -40,10 +40,10 @@ const items2 = [
 ]
 
 
-export default function App() {
+function App(props:{keyname:number}) {
   return (
     <Layout className='container'>
-      <MyHeader/>
+      <MyHeader key={props.keyname}/>
       <Layout className='content'>
         <Sider width={200} className="site-layout-background">
           <Menu
@@ -80,3 +80,11 @@ export default function App() {
     </Layout>
   );
 }
+
+const mapStateToProps = (state:{key:number})=> {
+  return{
+    keyname: state.key,
+  }
+}
+
+export default connect(mapStateToProps)(App);
