@@ -7,11 +7,16 @@ interface IAction{
     values?:any,
 }
 
-export default (state = defaultState, action:IAction) => {
+ const reducer = (state = defaultState, action:IAction) => {
     let newState = JSON.parse(JSON.stringify(defaultState));
     switch(action.type){
+        case 'changeKey':
+            newState.key++;
+            break;
         default:
             break;
     }
     return newState;
 }
+
+export default reducer;

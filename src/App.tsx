@@ -1,7 +1,7 @@
 import {SelectOutlined, ReadOutlined, EditOutlined, UnorderedListOutlined, UserOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu } from 'antd'; 
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, Link, useLocation} from "react-router-dom";
 import MyHeader from "components/MyHeader";
 import { connect } from 'react-redux';
 import 'App.less'
@@ -12,17 +12,17 @@ const items2 = [
   {
     key:'1',
     icon:React.createElement(ReadOutlined),
-    label:'查看文章列表',
+    label:<Link to={'/list'}>查看文章列表</Link>,
   },
   {
     key:'2',
     icon:React.createElement(EditOutlined),
-    label:'文章编辑',
+    label:<Link to={'/edit'}>文章编辑</Link>,
   },
   {
     key:'3',
     icon:React.createElement(UserOutlined),
-    label:'修改资料',
+    label:<Link to={'/modify'}>修改资料</Link>,
   },
   {
     key:'sub1',
@@ -32,7 +32,7 @@ const items2 = [
       {
         key:'1-1',
         icon:React.createElement(SelectOutlined),
-        label:'小编名单',
+        label:<Link to={'/namelist'}>小编名单</Link>,
       }
     ]
   },
@@ -41,6 +41,19 @@ const items2 = [
 
 
 function App(props:{keyname:number}) {
+  //定义侧边栏当前的值
+  const [asideState, setAsideState]=useState('0');
+  const location = useLocation();
+  //监听路由
+  useEffect(()=> {
+    switch(location.pathname){
+      case'/list': setAsideState('1');break;
+      case'/edit': setAsideState('2');break;
+      case'/modify': setAsideState('3');break;
+      case'/namelist': setAsideState('1-1');break;
+      default: setAsideState('0');
+    };
+  },[location.pathname]);
   return (
     <Layout className='container'>
       <MyHeader key={props.keyname}/>
@@ -49,7 +62,8 @@ function App(props:{keyname:number}) {
           <Menu
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={[asideState]}
+            selectedKeys={[asideState]}
             defaultOpenKeys={['sub1']}
             style={{
               height: '100%',
