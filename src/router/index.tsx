@@ -18,6 +18,7 @@ const router_arr:Iroute[] = [
     {path: "/", element:App, children:[
             {path:"/list", element:lazy(() => import("pages/List"))},
             {path:"/edit", element:lazy(() => import("pages/Edit"))},
+            {path:"/edit/:id", element:lazy(() => import("pages/Edit"))},
             {path:"/modify", element:lazy(() => import("pages/Modify"))},
             {path:"/namelist", element:lazy(() => import("pages/NameList"))},
         ]

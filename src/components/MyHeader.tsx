@@ -35,6 +35,8 @@ export default function App() {
         localStorage.removeItem('cms-token');
         localStorage.removeItem('username');
         localStorage.removeItem('avatar');
+        localStorage.removeItem('player');
+        localStorage.removeItem('editable');
         message.warning('即将退出，跳转到登陆页',1.5);
         setTimeout(()=>navigate("/login"),1500);
     }
@@ -63,7 +65,7 @@ export default function App() {
         <Dropdown overlay={menu}>
             <a href="!#" onClick={e => e.preventDefault()} >
                 <Space>
-                    <img src={avatar} alt="avatar" width={50} style={{borderRadius: "50%"}}/>
+                    <img src={avatar} alt="avatar" width={50} height={50} style={{borderRadius: "50%"}}/>
                     {username}
                     <DownOutlined />
                 </Space>

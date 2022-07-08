@@ -1,14 +1,32 @@
 import {SelectOutlined, ReadOutlined, EditOutlined, UnorderedListOutlined, UserOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu } from 'antd'; 
 import React, { useEffect, useState } from "react";
-import { Outlet, Link, useLocation} from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate} from "react-router-dom";
 import MyHeader from "components/MyHeader";
 import { connect } from 'react-redux';
 import 'App.less'
 
 const {Content, Sider } = Layout;
 
-const items2 = [
+const items_normal = [
+  {
+    key:'1',
+    icon:React.createElement(ReadOutlined),
+    label:<Link to={'/list'}>查看文章列表</Link>,
+  },
+  {
+    key:'2',
+    icon:React.createElement(EditOutlined),
+    label:<Link to={'/edit'}>文章编辑</Link>,
+  },
+  {
+    key:'3',
+    icon:React.createElement(UserOutlined),
+    label:<Link to={'/modify'}>修改资料</Link>,
+  },
+];
+
+const items_admistrator = [
   {
     key:'1',
     icon:React.createElement(ReadOutlined),
@@ -26,8 +44,9 @@ const items2 = [
   },
   {
     key:'sub1',
+    popupClassName:'sub',
     icon:React.createElement(UnorderedListOutlined),
-    label:'管理员',
+    label:<div >管理员</div>,
     children:[
       {
         key:'1-1',
@@ -36,24 +55,51 @@ const items2 = [
       }
     ]
   },
-  
-]
+];
 
 
 function App(props:{keyname:number}) {
   //定义侧边栏当前的值
   const [asideState, setAsideState]=useState('0');
+  const [items, setitems]=useState(items_normal);
+  const [breadText, setBreadText]=useState('');
   const location = useLocation();
+  const navigate = useNavigate();
   //监听路由
   useEffect(()=> {
     switch(location.pathname){
-      case'/list': setAsideState('1');break;
-      case'/edit': setAsideState('2');break;
-      case'/modify': setAsideState('3');break;
-      case'/namelist': setAsideState('1-1');break;
-      default: setAsideState('0');
+      case'/':
+        navigate('/list');
+        break;
+      case'/list': 
+        setAsideState('1');
+        setBreadText('文章列表');
+        break;
+      case'/edit': 
+        setAsideState('2');
+        setBreadText('文章编辑');
+        break;
+      case'/modify': 
+        setAsideState('3');
+        setBreadText('修改资料');
+        break;
+      case'/namelist': 
+        setAsideState('1-1');
+        setBreadText('小编名单');
+        break;
+      default: 
+        setAsideState('0');
     };
   },[location.pathname]);
+  useEffect(()=>{
+    const isadm = localStorage.getItem('player')==='vip' ? true:false;
+    if(isadm){
+      setitems(items_admistrator);
+    }else{
+      setitems(items_normal);
+    }
+  },[])
+
   return (
     <Layout className='container'>
       <MyHeader key={props.keyname}/>
@@ -69,7 +115,7 @@ function App(props:{keyname:number}) {
               height: '100%',
               borderRight: 0,
             }}
-            items={items2}
+            items={items}
           />
         </Sider>
         <Layout
@@ -82,9 +128,8 @@ function App(props:{keyname:number}) {
               margin: '16px 0',
             }}
           >
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
+            <Breadcrumb.Item> <Link to={'/'}>首页</Link> </Breadcrumb.Item>
+            <Breadcrumb.Item>{breadText}</Breadcrumb.Item>
           </Breadcrumb>
           <Content className="mycontent">
             <Outlet/>

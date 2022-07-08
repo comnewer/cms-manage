@@ -26,13 +26,17 @@ const Login: React.FC = () => {
           localStorage.setItem('username', res.data.username);
           localStorage.setItem('cms-token', res.data['cms-token']);
           localStorage.setItem('avatar', res.data.avatar);
+          localStorage.setItem('player', res.data.player);
+          localStorage.setItem('editable', res.data.editable);
           //登陆成功，跳转
           setTimeout(()=>navigate('/'),1500);
+        }else if(res.errcode===1){
+          message.error('用户名或密码错误', 1.5);
+        }else{
+          message.error('用户名不存在', 1.5);
         }
       }
     )
-
-    console.log('Success:', values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
